@@ -55,24 +55,28 @@ runge_kutta(x0,y0,h,n)
 
 
 
-
+# model must be in the form of (y, t) or else odeint wont use params
 def model(y, t):
     return -y+math.log(t)
-
+# create a list of our x values
 t = np.linspace(x0, x0+(n*h), n+1)
-print(t)
+
 rk_odeint_test = odeint(model, y0, t)
 
+# print the x and y values of odeint
 print(f"--------------------\n x is {t}\n y is {rk_odeint_test}\n")
 
+# plot manual RungeKutta
 plt.figure(1)
 plt.plot(xplot, yplot)
 
+# plot ode RK
 plt.figure(2)
 plt.plot(t, rk_odeint_test)
 
+# subplots
 fig, axs = plt.subplots(2)
-fig.suptitle('Vertical subplots')
+fig.suptitle('Subplots')
 axs[0].plot(xplot, yplot)
 axs[1].plot(t, rk_odeint_test)
 plt.show()
