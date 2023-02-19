@@ -153,7 +153,8 @@ void consumer(Monitor& monitor) {
 int main() {
 
     Monitor monitor;
-
+    
+    // randomly choose between calling producer or consumer
     while(true) {
         int i = rand() % 2;
         if(i){

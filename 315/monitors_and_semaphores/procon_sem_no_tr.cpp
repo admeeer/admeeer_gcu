@@ -141,6 +141,7 @@ void consumer() {
 // Main function
 int main() {
 
+    // randomly choose between calling producer or consumer
     while(true) {
         int i = rand() % 2;
         if(i){
