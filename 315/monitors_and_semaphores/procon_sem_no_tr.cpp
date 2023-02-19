@@ -86,13 +86,12 @@ _mutex m_mutex;
 
 void producer() {
     while(number_of_items != BUFFER_SIZE){
-        // make some item
-        int item = rand() % 100;
         // sleep for 1 second
         sleep(1);
         // wait for empty slot in buffer, decrement semaphore internal counter
         if(empty_sem.wait()){
-
+            // make some item
+            int item = rand() % 100;
             // acquire the mutex lock
             if(m_mutex.try_lock()){
                 // push item
