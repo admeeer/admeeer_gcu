@@ -9,7 +9,7 @@
 using namespace std;
 
 // Define the buffer size
-const int BUFFER_SIZE = 10;
+const int BUFFER_SIZE = 3;
 
 // Define the semaphores
 sem_t s_empty, s_full, s_mutex;
