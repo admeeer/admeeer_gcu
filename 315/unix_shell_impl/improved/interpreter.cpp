@@ -4,6 +4,20 @@
 #include <cstring>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <filesystem>
+
+// stores history of commands for shell lifetime
+std::vector<std::string> hist;
+
+std::string cwf;
+
+void _command_history(){
+
+    for(unsigned int i = 0; i < hist.size(); i++){
+        std::cout << "[" << i << "]" << "   " << hist[i] << std::endl;
+    }
+
+}
 
 /*
 Splits a string input into tokens separated by delimiter
@@ -33,6 +47,10 @@ std::vector<std::string> split(const std::string& input, char delimiter)
     return tokens;
 }
 
+void _get_current_working_folder(){
+cwf = split(std::filesystem::current_path(), '/').back();
+}
+
 // try to execute the command
 int run_command(const std::vector<std::string>& tokens)
 {
@@ -53,11 +71,23 @@ int run_command(const std::vector<std::string>& tokens)
         {
             args[i] = const_cast<char*>(tokens[i].c_str());
         }
+
         // we need to add a nullptr as the last element of our char* so execvp knows when to stop
         args[tokens.size()] = nullptr;
-        execvp(args[0], args);
-        // raises if execvp returns -1
-        perror("Error executing command");
+
+        if(std::strcmp(args[0], "history") == 0){
+            _command_history();
+
+        }else if(std::strcmp(args[0], "cd") == 0) {
+            if(chdir(args[1]) != 0){
+                std::cout << "$bshell: cd: " << args[1] << ": no such directory\n";
+            }
+        _get_current_working_folder();
+        }else{
+            execvp(args[0], args);
+            perror("Error executing command");
+        }
+
         // cleanup
         delete[] args;
         return -1;
@@ -75,11 +105,12 @@ void shell(){
 
     while(true){
 
-        std::cout << "$bshell ";
+        std::cout << "$bshell " + cwf + " ";
 
         std::string in;
         // we expect our input to contain whitespaces, so we'll get the entire line
         std::getline(std::cin, in);
+        hist.push_back(in);
 
         /*
         The rest of these lines are written in such a way that they're quite readable.
@@ -102,6 +133,8 @@ void shell(){
 
 int main()
 {
+    _get_current_working_folder();
+
     // start the program
     shell();
 
