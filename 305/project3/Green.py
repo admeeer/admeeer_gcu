@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import math
 
 
-t = np.linspace(0, 1, 100)
+t = np.linspace(0, 100, 100)
 
 
 def green_1(x):
