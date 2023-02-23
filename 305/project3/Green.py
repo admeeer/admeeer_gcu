@@ -15,7 +15,7 @@ def green_2(x):
     return -4 * math.cos(x) + 4
 
 def homo_1(x):
-    return (3/2)-((3/4)-math.exp(-2*x))
+    return (3/2)-((3/4)*math.exp(-2*x))
 
 def homo_2(x):
     return -4 * math.cos(x)
