@@ -13,11 +13,24 @@ void* process(void* arg) {
     int id = *((int*) arg);
     // timer
     int timeout = id * 5;
+    
+    bool timedout = false;
 
     while (true) {
         // sleep for 1 second
         sleep(1);
 
+        // is teh 
+        if (timedout == true){
+            timeout += 5;
+            sleep(1);
+            if(timeout == id * 5){
+                std::cout << "Process " << id << " has been restarted" << std::endl;
+                timedout = false;
+            }
+
+        }else{
+        
         if (resource) {
 
             // Try to acquire the resource
@@ -44,7 +57,7 @@ void* process(void* arg) {
             sleep(1);
 
         } else {
-            
+
             // Resource is not available
             std::cout << "Process " << id << " is waiting for the resource" << std::endl;
             // Sleep for a second
@@ -54,11 +67,13 @@ void* process(void* arg) {
         // Check if the process has been starved
         timeout--;
         if (timeout == 0) {
+            timedout = true;
             std::cout << "Process " << id << " has been terminated due to starvation" << std::endl;
-            pthread_exit(NULL);
+            //pthread_exit(NULL);
         }
         // Check if the thread has been interrupted
-        pthread_testcancel();
+        //pthread_testcancel();
+        }
     }
 }
 
